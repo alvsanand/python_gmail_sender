@@ -62,7 +62,11 @@ def create_message(sender, to, subject, message_file, attachments):
         message['from'] = sender
         message['subject'] = subject
 
-        message.attach(MIMEText(message_text))
+        if len(os.path.splitext(message_file)) == 0 or os.path.splitext(message_file)[1][1:] != 'html': 
+            message.attach(MIMEText(message_text, 'plain'))
+        else:
+            message.attach(MIMEText(message_text, 'html'))
+        
 
         for attachment in attachments:
             content_type, encoding = mimetypes.guess_type(attachment)
